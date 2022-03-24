@@ -18,7 +18,8 @@ export default interface WorkItemInfo {
   ParentId?: number;
 }
 
-export default interface WorkItemInfoWithTracking {
+export default interface WorkItemWithTrackingInfo {
   IsTracking: boolean;
-  Notes: string;
+  Notes: string[];
+  ActionItems: string[];
 }
