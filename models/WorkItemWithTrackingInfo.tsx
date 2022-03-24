@@ -5,6 +5,7 @@ import {
   WorkItemRelation,
 } from 'azure-devops-extension-api/WorkItemTracking';
 
+import WorkItemInfo from './WorkItemInfo';
 
 export default interface WorkItemWithTrackingInfo extends WorkItemInfo {
   IsTracking: boolean;
