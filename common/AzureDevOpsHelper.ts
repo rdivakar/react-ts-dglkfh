@@ -4,6 +4,7 @@ import * as SDK from 'azure-devops-extension-sdk';
 import { WorkRestClient, WorkItemColor } from 'azure-devops-extension-api/Work';
 
 import WorkItemInfo from '../models/WorkItemInfo';
+import WorkItemWithTrackingInfo from '../models/WorkItemWithTrackingInfo';
 
 import {
   WorkItem,
@@ -32,13 +33,20 @@ const witRestClient: WorkItemTrackingRestClient = API.getClient(
 
 export async function getWorkItemsByQuery(
   query: string
-): Promise<WorkItemInfo> {
+): Promise<WorkItemInfo[]> {
   try {
+    let projectName = await getProjectName();
     let wiql: Wiql = { query: this.query };
     let qResult: WorkItemQueryResult = await witRestClient.queryByWiql(
       wiql,
-      getProjectName()
+      projectName
     );
+
+    let workItemInfos: WorkItemInfo[] = await getWorkItemsFromueryResult(
+      qResult
+    );
+
+    return workItemInfos;
   } catch (error) {
     console.log(error);
     throw new Error('Error getting Workitem using Wiql');
@@ -98,8 +106,8 @@ export async function getWorkItemInfo(
 
 async function getWorkItemsFromueryResult(
   workItemQueryResult: WorkItemQueryResult
-): Promise<Array<WorkItemInfo>> {
-  let workItemInfos: Array<WorkItemInfo> = [];
+): Promise<WorkItemInfo[]> {
+  let workItemInfos: WorkItemInfo[] = [];
 
   let workItemIds: number[] = workItemQueryResult.workItems.map(function (
     val,
@@ -110,10 +118,26 @@ async function getWorkItemsFromueryResult(
 
   let projectName = await getProjectName();
 
+  let date: Date = new Date(new Date().toUTCString());
+
   let workItemQueryRequest: WorkItemBatchGetRequest = {
     ids: workItemIds,
     $expand: WorkItemExpand.All,
     errorPolicy: WorkItemErrorPolicy.Fail,
+    fields: [
+      'System.Id',
+      'System.Title',
+      'System.WorkItemType',
+      'System.TeamProject',
+      'System.State',
+      'System.Reason',
+      'System.AssignedTo',
+      'System.CreatedDate',
+      'System.Tags',
+      'System.Parent',
+      'System.AreaPath',
+    ],
+    asOf: date,
   };
 
   let workItems: WorkItem[] = await witRestClient.getWorkItemsBatch(
@@ -121,10 +145,10 @@ async function getWorkItemsFromueryResult(
     projectName
   );
 
-  if (workItems.length > 0) {
-    workItems.forEach((item) => {
-      workItemInfos.push({});
-    });
-  }
+  workItems.forEach(async function (value) {
+    let w: WorkItemInfo = await getWorkItemInfo(value);
+    workItemInfos.push(w);
+  });
+
   return workItemInfos;
 }

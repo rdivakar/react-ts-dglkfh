@@ -5,6 +5,8 @@ import {
   WorkItemRelation,
 } from 'azure-devops-extension-api/WorkItemTracking';
 
+import WorkItemInfo from '../models/WorkItemInfo';
+
 export default interface WorkItemInfo {
   WorkItem: WorkItem;
   Title: string;
@@ -16,10 +18,4 @@ export default interface WorkItemInfo {
   Tags: string;
   Relations: WorkItemRelation[];
   ParentId?: number;
-}
-
-export default interface WorkItemWithTrackingInfo {
-  IsTracking: boolean;
-  Notes: string[];
-  ActionItems: string[];
 }
