@@ -32,11 +32,6 @@ export const ObjectiveTagPicker: React.FunctionComponent<{}> = () => {
     };
   };
 
-  public componentDidMount()
-  {
-
-  }
-
   const onSearchChanged = (searchValue: string) => {
     clearTimeout(timeoutId.current);
 

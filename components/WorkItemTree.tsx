@@ -1,13 +1,13 @@
 import * as React from 'react';
 import { Card } from 'azure-devops-ui/Card';
-import { Tree, ITree, ITreeRow } from 'azure-devops-ui/TreeEx';
+import { Tree, ITree, ITreeRow, ITreeRowDetails } from 'azure-devops-ui/TreeEx';
 import {
   ITreeItemProvider,
   ITreeItemEx,
 } from 'azure-devops-ui/Utilities/TreeItemProvider';
 
 import WorkItemHeaderRow from './WorkItemHeaderRow';
-import {IWorkItemTableItem, getItemProvider, treeColumns } from './WorkItemTreeData';
+import {IWorkItemTableItem,getItemProvider, treeColumns } from './WorkItemTreeData';
 
 export default class WorkItemTree extends React.Component<{}> {
   private itemProvider: ITreeItemProvider<IWorkItemTableItem>;
@@ -17,24 +17,16 @@ export default class WorkItemTree extends React.Component<{}> {
     this.itemProvider = getItemProvider();
   }
 
-  public renderRow(): JSX:Element{
+  private renderRow = (rowIndex: number, item: ITreeItemEx<IWorkItemTableItem>, details: ITreeRowDetails<IWorkItemTableItem>): JSX.Element => {
 
-    <WorkItemHeaderRow
-        WorkItem={this.props.WorkItem}
-        Icon={this.props.Icon}
-        Reason={this.props.Reason}
-        Title={this.props.Title}
-        Type={this.props.Type}
-        AreaPath={this.props.AreaPath}
-        Relations={this.props.Relations}
-        State={this.props.State}
-        Tags={this.props.Tags}
-        ParentId={this.props.ParentId}
-      ></WorkItemHeaderRow>
+    return (
+
+    );
   }
 
   onSelect: (event:React.SyntheticEvent<HTMLElement>, treeRow:ITreeRow<IWorkItemTableItem>) => void {
 
+    
 
   }
 
@@ -45,9 +37,13 @@ export default class WorkItemTree extends React.Component<{}> {
         contentProps={{ contentPadding: false }}
       >
         <Tree<ILocationTableItem>
+          renderRow={renderRow}
+          singleClickActivation={true}
+          showHeader={false}
           ariaLabel="Basic tree"
+          columns={treeColumns}
           itemProvider={this.itemProvider}
-          onToggle={(event, treeItem: ITreeItemEx<ILocationTableItem>) => {
+          onToggle={(event, treeItem: ITreeItemEx<IWorkItemTableItem>) => {
             this.itemProvider.toggle(treeItem.underlyingItem);
           }}
           scrollable={true}
