@@ -106,7 +106,16 @@ export async function initializeAuth(): Promise<void> {
     const token = await SDK.getAppToken();
     appToken = token;
   } catch (e) {
-    console.log('get connection data fail: ' + e);
+    console.log('initializeAuth fail: ' + e);
+  }
+}
+
+export async function getAccessToken(): Promise<string> {
+  try {
+    const token = await SDK.getAccessToken();
+    return token;
+  } catch (e) {
+    console.log('getAccessToken fail: ' + e);
   }
 }
 

@@ -37,6 +37,10 @@ export default class Wit extends React.Component {
   private selectedTabId = new ObservableValue<string>('workitems');
   private loadingIcon = new ObservableValue<boolean>(false);
 
+  constructor(props) {
+    super(props);
+  }
+
   private onSelectedTabChanged = (newTabId: string) => {
     this.selectedTabId.value = newTabId;
   };

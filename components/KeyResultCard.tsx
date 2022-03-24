@@ -21,6 +21,10 @@ import * as ADOHelper from '../common/AzureDevOpsHelper';
 import { css } from 'azure-devops-ui/Util';
 
 export default class KeyResultCard extends React.Component<WorkItemInfo, any> {
+  constructor(props: WorkItemInfo) {
+    super(props);
+  }
+
   private onChangeTracking(event, value): void {}
 
   private renderCustomHeader(): JSX.Element {

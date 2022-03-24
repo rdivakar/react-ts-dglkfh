@@ -30,16 +30,16 @@ export default class SettingsTab extends React.Component<
     this.state = {};
   }
 
-  public componentDidMount() {
+  componentDidMount() {
     this.initializeState();
   }
 
   private async initializeState(): Promise<void> {
-    await SDK.ready();
-    const accessToken = await SDK.getAccessToken();
     const extDataService = await SDK.getService<IExtensionDataService>(
       CommonServiceIds.ExtensionDataService
     );
+    let accessToken = await Helper.getAccessToken();
+
     this._dataManager = await extDataService.getExtensionDataManager(
       SDK.getExtensionContext().id,
       accessToken
