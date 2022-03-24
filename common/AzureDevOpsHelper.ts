@@ -3,6 +3,8 @@ import * as SDK from 'azure-devops-extension-sdk';
 
 import { WorkRestClient, WorkItemColor } from 'azure-devops-extension-api/Work';
 
+import * as WorkItemTrackingApi from 'azure-devops-node-api/WorkItemTrackingApi';
+
 import WorkItemInfo from '../models/WorkItemInfo';
 import WorkItemWithTrackingInfo from '../models/WorkItemWithTrackingInfo';
 
@@ -24,6 +26,13 @@ import {
   INavigationElement,
   IPageRoute,
 } from 'azure-devops-extension-api';
+
+import {
+  IExtensionDataManager,
+  IExtensionDataService,
+} from 'azure-devops-extension-api';
+
+import * as Helper from './TokenHelper';
 
 const wiRestClient: WorkRestClient = API.getClient(WorkRestClient);
 
@@ -151,4 +160,38 @@ async function getWorkItemsFromueryResult(
   });
 
   return workItemInfos;
+}
+
+export function getWorkItemUrl(item: WorkItemInfo): string {
+  return `https://dev.azure.com/${Helper.getOrganization()}/${
+    item.WorkItem.fields['System.TeamProject']
+  }/_workitems/edit/${item.WorkItem.id}`;
+}
+
+export async function getMyWorkItems(): Promise<WorkItemInfo[]> {
+  let query: string =
+    'SELECT [Id] From WorkItems WHERE [Assigned to] = @Me ORDER BY By [Id] Asc';
+
+  return await getWorkItemsByQuery(query);
+}
+
+export async function getMyKRs(): Promise<WorkItemInfo[]> {
+  let query: string =
+    "SELECT [Id] FROM workitems WHERE System.AssignedTo = @Me AND System.WorkItemType = 'Key Result'";
+
+  return await getWorkItemsByQuery(query);
+}
+
+export async function getChildrenOf(id: number): Promise<WorkItemInfo[]> {
+  let query: string =
+    "SELECT [System.Id] FROM Workitemlinks WHERE (Source.System.Id = ${id}) AND System.Links.LinkType =  'System.LinkTypes.Hierarchy-Forward' ORDER BY[System.Id] Asc";
+
+  return await getWorkItemsByQuery(query);
+}
+
+export async function getParentOf(id: number): Promise<WorkItemInfo[]> {
+  let query: string =
+    "SELECT [System.Id] FROM Workitemlinks WHERE (Source.System.Id = ${id}) AND System.Links.LinkType = 'System.LinkTypes.Hierarchy-Reverse' ORDER BY[System.Id] Asc";
+
+  return await getWorkItemsByQuery(query);
 }

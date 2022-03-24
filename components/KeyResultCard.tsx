@@ -14,8 +14,11 @@ import { Link } from 'azure-devops-ui/Components/Link/Link';
 
 import { Image } from 'azure-devops-ui/Image';
 import { Header } from 'azure-devops-ui/Header';
-import { IdentityCardHeaderElement } from 'azure-devops-ui/Identity';
+import { IdentityCardHeaderElement } from 'azure-devops-ui/Components/IdentityCard/IdentityCardHeaderElement';
 import { Toggle } from 'azure-devops-ui/Toggle';
+
+import * as ADOHelper from '../common/AzureDevOpsHelper';
+import { css } from 'azure-devops-ui/Util';
 
 export default class KeyResultCard extends React.Component<WorkItemInfo, any> {
   private onChangeTracking(event, value): void {}
@@ -32,22 +35,22 @@ export default class KeyResultCard extends React.Component<WorkItemInfo, any> {
                 className="text-ellipsis"
                 titleSize={TitleSize.Large}
               >
-                <Link href={this.props.url} subtle={true}>
+                <Link href={ADOHelper.getWorkItemUrl(this.props)} subtle={true}>
                   {' '}
-                  {this.props.id} {this.props.Title}{' '}
+                  {this.props.WorkItem.id} {this.props.Title}{' '}
                 </Link>
               </HeaderTitle>
             </HeaderTitleRow>
             <HeaderDescription>
               <IdentityCardHeaderElement
-                identity={this.props.fields['System.AssignedTo']}
+                identity={this.props.WorkItem.fields['System.AssignedTo']}
               ></IdentityCardHeaderElement>
             </HeaderDescription>
           </HeaderTitleArea>
           <Toggle
             offText={'Off'}
             onText={'On'}
-            checked={this.props.IsTracking}
+            checked={true}
             onChange={this.onChangeTracking}
           />
         </CustomHeader>

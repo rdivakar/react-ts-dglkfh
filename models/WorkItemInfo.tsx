@@ -5,8 +5,6 @@ import {
   WorkItemRelation,
 } from 'azure-devops-extension-api/WorkItemTracking';
 
-import WorkItemInfo from '../models/WorkItemInfo';
-
 export default interface WorkItemInfo {
   WorkItem: WorkItem;
   Title: string;
