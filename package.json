@@ -11,7 +11,8 @@
     "azure-devops-ui": "^2.167.31",
     "msal": "^1.4.16",
     "react": "^16.8.0",
-    "react-dom": "^16.8.0"
+    "react-dom": "^16.8.0",
+    "react-multivalue-text-input": "^1.0.0"
   },
   "scripts": {
     "start": "react-scripts-ts start",

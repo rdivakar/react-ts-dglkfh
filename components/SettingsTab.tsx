@@ -10,8 +10,11 @@ import {
 
 import { Button } from 'azure-devops-ui/Button';
 import { TextField } from 'azure-devops-ui/TextField';
-
+import { ObservableValue } from 'azure-devops-ui/Core/Observable';
+import { FormItem } from 'azure-devops-ui/FormItem';
 import * as Helper from '../common/TokenHelper';
+
+import { ObjectiveTagPicker } from './ObjectiveTagPicker';
 
 export interface IExtensionDataState {
   dataText?: string;
@@ -23,63 +26,23 @@ export default class SettingsTab extends React.Component<
   {},
   IExtensionDataState
 > {
-  private _dataManager?: IExtensionDataManager;
-
   constructor(props: {}) {
     super(props);
     this.state = {};
   }
 
-  componentDidMount() {
+  public componentDidMount() {
     this.initializeState();
   }
 
-  private async initializeState(): Promise<void> {
-    const extDataService = await SDK.getService<IExtensionDataService>(
-      CommonServiceIds.ExtensionDataService
-    );
-    let accessToken = await Helper.getAccessToken();
-
-    this._dataManager = await extDataService.getExtensionDataManager(
-      SDK.getExtensionContext().id,
-      accessToken
-    );
-
-    let key: string = `${Helper.getUserName()}-Settings`;
-
-    this._dataManager.getValue<string>(key).then(
-      (data) => {
-        this.setState({
-          dataText: data,
-          persistedText: data,
-          ready: true,
-        });
-      },
-      () => {
-        this.setState({
-          dataText: '',
-          ready: true,
-        });
-      }
-    );
-  }
+  private async initializeState(): Promise<void> {}
 
   public render(): JSX.Element {
     const { dataText, ready, persistedText } = this.state;
 
     return (
       <div className="page-content page-content-top flex-row rhythm-horizontal-16">
-        <TextField
-          value={dataText}
-          onChange={this.onTextValueChanged}
-          disabled={!ready}
-        />
-        <Button
-          text="Save"
-          primary={true}
-          onClick={this.onSaveData}
-          disabled={!ready || dataText === persistedText}
-        />
+        <ObjectiveTagPicker />
       </div>
     );
   }
@@ -91,15 +54,5 @@ export default class SettingsTab extends React.Component<
     this.setState({ dataText: value });
   };
 
-  private onSaveData = (): void => {
-    const { dataText } = this.state;
-    let key: string = `${Helper.getUserName()}-Settings`;
-    this.setState({ ready: false });
-    this._dataManager!.setValue<string>(key, dataText || '').then(() => {
-      this.setState({
-        ready: true,
-        persistedText: dataText,
-      });
-    });
-  };
+  private onSaveData = (): void => {};
 }

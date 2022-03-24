@@ -1,8 +1,9 @@
 import React, { Component } from 'react';
 import { render } from 'react-dom';
 import Hello from './Hello';
-import Wit from './components/Wit';
+import WitHub from './components/Wit';
 import './iconFont.css';
+import * as SDK from 'azure-devops-extension-sdk';
 
 interface AppProps {}
 interface AppState {
@@ -20,7 +21,7 @@ class App extends Component<AppProps, AppState> {
   render() {
     return (
       <div>
-        <Wit />
+        <WitHub />
       </div>
     );
   }

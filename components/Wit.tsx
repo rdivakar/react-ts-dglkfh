@@ -2,6 +2,7 @@ import '../wit.scss';
 
 import * as React from 'react';
 import * as ReactDOM from 'react-dom';
+import * as SDK from 'azure-devops-extension-sdk';
 
 import { Image } from 'azure-devops-ui/Image';
 import { Page } from 'azure-devops-ui/Page';
@@ -33,7 +34,15 @@ import { Observer } from 'azure-devops-ui/Observer';
 import WorkItemsTab from './WorkItemsTab';
 import SettingsTab from './SettingsTab';
 
-export default class Wit extends React.Component {
+interface IHubContentState {
+  selectedTabId: string;
+  fullScreenMode: boolean;
+  headerDescription?: string;
+  useLargeTitle?: boolean;
+  useCompactPivots?: boolean;
+}
+
+export default class WitHub extends React.Component<{}, IHubContentState> {
   private selectedTabId = new ObservableValue<string>('workitems');
   private loadingIcon = new ObservableValue<boolean>(false);
 

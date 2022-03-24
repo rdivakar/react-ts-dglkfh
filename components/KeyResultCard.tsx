@@ -20,6 +20,8 @@ import { Toggle } from 'azure-devops-ui/Toggle';
 import * as ADOHelper from '../common/AzureDevOpsHelper';
 import { css } from 'azure-devops-ui/Util';
 
+import WorkItemHeaderRow from './WorkItemHeaderRow';
+
 export default class KeyResultCard extends React.Component<WorkItemInfo, any> {
   constructor(props: WorkItemInfo) {
     super(props);
@@ -29,36 +31,18 @@ export default class KeyResultCard extends React.Component<WorkItemInfo, any> {
 
   private renderCustomHeader(): JSX.Element {
     return (
-      <div>
-        <CustomHeader className="bolt-header-with-commandbar">
-          <Image containImage={true} src={this.props.Icon.url} />
-          <HeaderTitleArea>
-            <HeaderTitleRow>
-              <HeaderTitle
-                ariaLevel={3}
-                className="text-ellipsis"
-                titleSize={TitleSize.Large}
-              >
-                <Link href={ADOHelper.getWorkItemUrl(this.props)} subtle={true}>
-                  {' '}
-                  {this.props.WorkItem.id} {this.props.Title}{' '}
-                </Link>
-              </HeaderTitle>
-            </HeaderTitleRow>
-            <HeaderDescription>
-              <IdentityCardHeaderElement
-                identity={this.props.WorkItem.fields['System.AssignedTo']}
-              ></IdentityCardHeaderElement>
-            </HeaderDescription>
-          </HeaderTitleArea>
-          <Toggle
-            offText={'Off'}
-            onText={'On'}
-            checked={true}
-            onChange={this.onChangeTracking}
-          />
-        </CustomHeader>
-      </div>
+      <WorkItemHeaderRow
+        WorkItem={this.props.WorkItem}
+        Icon={this.props.Icon}
+        Reason={this.props.Reason}
+        Title={this.props.Title}
+        Type={this.props.Type}
+        AreaPath={this.props.AreaPath}
+        Relations={this.props.Relations}
+        State={this.props.State}
+        Tags={this.props.Tags}
+        ParentId={this.props.ParentId}
+      ></WorkItemHeaderRow>
     );
   }
 
@@ -68,41 +52,7 @@ export default class KeyResultCard extends React.Component<WorkItemInfo, any> {
         className="master-example-panel show-on-small-screens subtle-border no-v-padding"
         titleProps={{ text: 'Test', size: TitleSize.Large }}
         renderHeader={this.renderCustomHeader}
-      >
-        <div></div>
-      </Card>
+      ></Card>
     );
   }
 }
-
-const CardHeader: React.SFC<ICardProps> = (props) => {
-  const {
-    collapsible,
-    titleProps = {},
-    headerBreakpoints,
-    headerClassName,
-    headerCommandBarItems,
-    headerDescriptionProps = {},
-    headerIconProps,
-  } = props;
-  const { text, className, id, size, ariaLevel } = titleProps;
-  return (
-    <Header
-      className={css(
-        headerClassName,
-        'bolt-card-header',
-        collapsible && 'bolt-card-header-collapsible'
-      )}
-      commandBarItems={headerCommandBarItems}
-      description={headerDescriptionProps.text}
-      descriptionClassName={headerDescriptionProps.className}
-      headerBreakpoints={headerBreakpoints}
-      titleId={id}
-      titleIconProps={headerIconProps}
-      title={text}
-      titleAriaLevel={ariaLevel}
-      titleClassName={className}
-      titleSize={size}
-    />
-  );
-};
