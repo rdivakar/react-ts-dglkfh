@@ -65,9 +65,10 @@ export default class WitHub extends React.Component<{}, IHubContentState> {
 
   private async getPageContent() {
     if (this.selectedTabId.value === 'workitems') {
-      let keyResults: WorkItemInfo[] = await ADOHelper.getMyKRs();
+      //let keyResults: WorkItemInfo[] = await ADOHelper.getMyKRs();
 
-      return <WorkItemsTab items={keyResults} />;
+      return <SettingsTab />;
+      //return <WorkItemsTab items={keyResults} />;
     } else {
       return <SettingsTab />;
     }

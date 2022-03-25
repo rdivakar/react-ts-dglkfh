@@ -41,6 +41,7 @@ export const workItemColumn = {
   id: 'Id',
   name: 'Id',
   renderCell: renderExpandableTreeCell,
+  width: 800,
 };
 
 export const treeColumns = [workItemColumn];

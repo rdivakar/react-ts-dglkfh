@@ -40,13 +40,13 @@ export default class WorkItemTree extends React.Component<{}> {
     );
   }
 
+    /**
   onSelect = (event:React.SyntheticEvent<HTMLElement>, treeRow:ITreeRow<IWorkItemTableItem>): void => {
 
     let item = this.itemProvider.getItem(treeRow.index).underlyingItem.childItems = 
 
-    item.
-
   }
+   */
 
   public render(): JSX.Element {
     return (
@@ -54,8 +54,8 @@ export default class WorkItemTree extends React.Component<{}> {
         className="flex-grow bolt-card-no-vertical-padding"
         contentProps={{ contentPadding: false }}
       >
-        <Tree<ILocationTableItem>
-          renderRow={renderRow}
+        <Tree<IWorkItemTableItem>
+          renderRow={this.renderRow}
           singleClickActivation={true}
           showHeader={false}
           ariaLabel="Basic tree"
