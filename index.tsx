@@ -18,6 +18,10 @@ class App extends Component<AppProps, AppState> {
     };
   }
 
+  public componentDidMount() {
+    SDK.init();
+  }
+
   render() {
     return (
       <div>

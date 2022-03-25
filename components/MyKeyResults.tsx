@@ -1,6 +1,6 @@
 import * as React from 'react';
 import { Card } from 'azure-devops-ui/Card';
-import MyJobCard from './KeyResultCard';
+import KeyResultCard from './KeyResultCard';
 import { ArrayItemProvider } from 'azure-devops-ui/Utilities/Provider';
 import WorkItemInfo from '../models/WorkItemInfo';
 

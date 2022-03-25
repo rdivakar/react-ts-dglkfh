@@ -42,6 +42,9 @@ interface IHubContentState {
   useCompactPivots?: boolean;
 }
 
+import * as ADOHelper from '../common/AzureDevOpsHelper';
+import WorkItemInfo from '../models/WorkItemInfo';
+
 export default class WitHub extends React.Component<{}, IHubContentState> {
   private selectedTabId = new ObservableValue<string>('workitems');
   private loadingIcon = new ObservableValue<boolean>(false);
@@ -60,9 +63,11 @@ export default class WitHub extends React.Component<{}, IHubContentState> {
     );
   };
 
-  private getPageContent() {
+  private async getPageContent() {
     if (this.selectedTabId.value === 'workitems') {
-      return <WorkItemsTab />;
+      let keyResults: WorkItemInfo[] = await ADOHelper.getMyKRs();
+
+      return <WorkItemsTab items={keyResults} />;
     } else {
       return <SettingsTab />;
     }
