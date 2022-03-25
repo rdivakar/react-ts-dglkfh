@@ -62,12 +62,6 @@ export async function getWorkItemsByQuery(
   }
 }
 
-/**
-export async function getWorkItemById(
-  id: number
-): Promise<Array<WorkItemInfo>> {}
-*/
-
 export async function getProjectName(): Promise<string> {
   const projectService = await SDK.getService<IProjectPageService>(
     CommonServiceIds.ProjectPageService
@@ -162,6 +156,16 @@ async function getWorkItemsFromueryResult(
   return workItemInfos;
 }
 
+export async function getWorkItemById(id: number): Promise<WorkItemInfo> {
+  let query: string = `SELECT [Id] From WorkItems WHERE [Id] = ${id}`;
+  let items: WorkItemInfo[] = await getWorkItemsByQuery(query);
+
+  if (items.length > 0) {
+    return items[0];
+  }
+  return undefined;
+}
+
 export function getWorkItemUrl(item: WorkItemInfo): string {
   return `https://dev.azure.com/${Helper.getOrganization()}/${
     item.WorkItem.fields['System.TeamProject']
@@ -183,15 +187,13 @@ export async function getMyKRs(): Promise<WorkItemInfo[]> {
 }
 
 export async function getChildrenOf(id: number): Promise<WorkItemInfo[]> {
-  let query: string =
-    "SELECT [System.Id] FROM Workitemlinks WHERE (Source.System.Id = ${id}) AND System.Links.LinkType =  'System.LinkTypes.Hierarchy-Forward' ORDER BY[System.Id] Asc";
+  let query: string = `SELECT [System.Id] FROM Workitemlinks WHERE (Source.System.Id = ${id}) AND System.Links.LinkType =  'System.LinkTypes.Hierarchy-Forward' ORDER BY[System.Id] Asc`;
 
   return await getWorkItemsByQuery(query);
 }
 
 export async function getParentOf(id: number): Promise<WorkItemInfo[]> {
-  let query: string =
-    "SELECT [System.Id] FROM Workitemlinks WHERE (Source.System.Id = ${id}) AND System.Links.LinkType = 'System.LinkTypes.Hierarchy-Reverse' ORDER BY[System.Id] Asc";
+  let query: string = `SELECT [System.Id] FROM Workitemlinks WHERE (Source.System.Id = ${id}) AND System.Links.LinkType = 'System.LinkTypes.Hierarchy-Reverse' ORDER BY[System.Id] Asc`;
 
   return await getWorkItemsByQuery(query);
 }

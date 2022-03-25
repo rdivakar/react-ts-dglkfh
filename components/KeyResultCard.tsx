@@ -50,7 +50,7 @@ export default class KeyResultCard extends React.Component<WorkItemInfo, any> {
     return (
       <Card
         className="master-example-panel show-on-small-screens subtle-border no-v-padding"
-        titleProps={{ text: 'Test', size: TitleSize.Large }}
+        titleProps={{ text: this.props.Title, size: TitleSize.Large }}
         renderHeader={this.renderCustomHeader}
       ></Card>
     );

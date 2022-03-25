@@ -1,6 +1,16 @@
 import { ISimpleListCell } from 'azure-devops-ui/List';
 import { MenuItemType } from 'azure-devops-ui/Menu';
-import { ColumnMore, ISimpleTableCell } from 'azure-devops-ui/Table';
+import {
+  ISimpleTableCell,
+  ColumnMore,
+  ITableColumn,
+  SimpleTableCell,
+  Table,
+  TwoLineTableCell,
+  ColumnSorting,
+  SortOrder,
+  sortItems,
+} from 'azure-devops-ui/Table';
 import {
   renderExpandableTreeCell,
   renderTreeCell,

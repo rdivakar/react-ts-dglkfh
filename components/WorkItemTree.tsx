@@ -9,6 +9,9 @@ import {
 import WorkItemHeaderRow from './WorkItemHeaderRow';
 import {IWorkItemTableItem,getItemProvider, treeColumns } from './WorkItemTreeData';
 
+import * as ADOHelper from '../common/AzureDevOpsHelper';
+import WorkItemInfo from '../models/WorkItemInfo';
+
 export default class WorkItemTree extends React.Component<{}> {
   private itemProvider: ITreeItemProvider<IWorkItemTableItem>;
 
@@ -19,14 +22,29 @@ export default class WorkItemTree extends React.Component<{}> {
 
   private renderRow = (rowIndex: number, item: ITreeItemEx<IWorkItemTableItem>, details: ITreeRowDetails<IWorkItemTableItem>): JSX.Element => {
 
+    let workItem:WorkItemInfo = await ADOHelper.getWorkItemById(5565056);
+    
     return (
-
+      <WorkItemHeaderRow
+      WorkItem={workItem.WorkItem}
+      Icon={workItem.Icon}
+      Reason={workItem.Reason}
+      Title={workItem.Title}
+      Type={workItem.Type}
+      AreaPath={workItem.AreaPath}
+      Relations={workItem.Relations}
+      State={workItem.State}
+      Tags={workItem.Tags}
+      ParentId={workItem.ParentId}
+    ></WorkItemHeaderRow>
     );
   }
 
-  onSelect: (event:React.SyntheticEvent<HTMLElement>, treeRow:ITreeRow<IWorkItemTableItem>) => void {
+  onSelect = (event:React.SyntheticEvent<HTMLElement>, treeRow:ITreeRow<IWorkItemTableItem>): void => {
 
-    
+    let item = this.itemProvider.getItem(treeRow.index).underlyingItem.childItems = 
+
+    item.
 
   }
 
